@@ -1,0 +1,34 @@
+{
+  "rooms": [
+    {
+      "name": "Living Room",
+      "width": 6,
+      "depth": 5,
+      "height": 3
+    },
+    {
+      "name": "Master Bedroom",
+      "width": 4,
+      "depth": 4,
+      "height": 3
+    },
+    {
+      "name": "Kitchen",
+      "width": 3,
+      "depth": 3,
+      "height": 3
+    },
+    {
+      "name": "Bathroom",
+      "width": 2,
+      "depth": 2,
+      "height": 3
+    },
+    {
+      "name": "Guest Bedroom",
+      "width": 3.5,
+      "depth": 3.5,
+      "height": 3
+    }
+  ]
+} 
