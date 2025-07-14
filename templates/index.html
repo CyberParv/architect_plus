@@ -11,25 +11,11 @@
         <!-- Header -->
         <header class="header">
             <h1 class="title">🏗️ Architect Plus</h1>
-            <p class="subtitle">AI-Powered Architectural Design Generator with Professional Spaceplanning</p>
+            <p class="subtitle">AI-Powered Architectural Design Generator</p>
         </header>
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Mode Selection -->
-            <div class="mode-section">
-                <div class="mode-toggle">
-                    <label class="mode-label">
-                        <input type="radio" name="designMode" value="basic" checked>
-                        <span class="mode-text">Basic Design</span>
-                    </label>
-                    <label class="mode-label">
-                        <input type="radio" name="designMode" value="professional">
-                        <span class="mode-text">Professional Spaceplanning</span>
-                    </label>
-                </div>
-            </div>
-
             <!-- Input Form -->
             <div class="form-section">
                 <label for="designDescription" class="input-label">
@@ -42,25 +28,6 @@
                     rows="4"
                 ></textarea>
                 
-                <!-- Professional Controls -->
-                <div id="professionalControls" class="professional-controls hidden">
-                    <h3>Professional Spaceplanning Parameters</h3>
-                    <div class="controls-grid">
-                        <div class="control-group">
-                            <label for="designSeed">Design Seed (1-100):</label>
-                            <input type="number" id="designSeed" min="1" max="100" value="50">
-                        </div>
-                        <div class="control-group">
-                            <label for="circulationFactor">Circulation Factor (1.0-3.0):</label>
-                            <input type="number" id="circulationFactor" min="1.0" max="3.0" step="0.1" value="1.8">
-                        </div>
-                        <div class="control-group">
-                            <label for="acceptableWidth">Acceptable Width (10-30m):</label>
-                            <input type="number" id="acceptableWidth" min="10" max="30" step="0.5" value="18.0">
-                        </div>
-                    </div>
-                </div>
-                
                 <button id="generateBtn" class="generate-btn" onclick="generateDesign()">
                     <span class="btn-text">Generate Design</span>
                     <span class="btn-icon">✨</span>
@@ -70,84 +37,20 @@
             <!-- Loading Spinner -->
             <div id="loadingSpinner" class="loading-spinner hidden">
                 <div class="spinner"></div>
-                <p id="loadingMessage">Generating your architectural design...</p>
+                <p>Generating your architectural design...</p>
             </div>
 
             <!-- Results Section -->
             <div id="resultsSection" class="results-section hidden">
                 <h2 class="results-title">Generated Design Specifications</h2>
                 
-                <!-- Spaceplanning Summary -->
-                <div id="spaceplanningSummary" class="spaceplanning-summary hidden">
-                    <h3>Professional Spaceplanning Results</h3>
-                    <div class="summary-grid">
-                        <div class="summary-item">
-                            <span class="summary-label">Departments:</span>
-                            <span id="departmentCount" class="summary-value">-</span>
-                        </div>
-                        <div class="summary-item">
-                            <span class="summary-label">Programs:</span>
-                            <span id="programCount" class="summary-value">-</span>
-                        </div>
-                        <div class="summary-item">
-                            <span class="summary-label">Circulation Elements:</span>
-                            <span id="circulationCount" class="summary-value">-</span>
-                        </div>
-                        <div class="summary-item">
-                            <span class="summary-label">3D Geometry:</span>
-                            <span id="geometryCount" class="summary-value">-</span>
-                        </div>
-                        <div class="summary-item">
-                            <span class="summary-label">Status:</span>
-                            <span id="spaceplanningStatus" class="summary-value">-</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tabs for different views -->
-                <div class="results-tabs">
-                    <button class="tab-button active" onclick="showTab('design')">Design Data</button>
-                    <button class="tab-button" onclick="showTab('spaceplanning')" id="spaceplanningTab" style="display:none;">Spaceplanning</button>
-                    <button class="tab-button" onclick="showTab('dynamo')">Dynamo Script</button>
-                </div>
-
-                <!-- Tab Content -->
-                <div id="designTab" class="tab-content active">
-                    <div class="json-container">
-                        <pre id="jsonOutput" class="json-output"></pre>
-                    </div>
-                </div>
-
-                <div id="spaceplanningTab" class="tab-content">
-                    <div class="json-container">
-                        <pre id="spaceplanningOutput" class="json-output"></pre>
-                    </div>
-                </div>
-
-                <div id="dynamoTab" class="tab-content">
-                    <div class="dynamo-info">
-                        <h4>Dynamo Script Information</h4>
-                        <p>Your design has been processed and is ready for Dynamo:</p>
-                        <ul>
-                            <li>✅ Dynamo Script: <code>Architect_Plus_Spaceplanning_Complete.dyn</code></li>
-                            <li>✅ Input JSON: <code>./output/design.json</code></li>
-                            <li>✅ Compatible with Revit 2026 and Design Automation</li>
-                        </ul>
-                        <div class="dynamo-instructions">
-                            <h5>Usage Instructions:</h5>
-                            <ol>
-                                <li>Open Dynamo in Revit 2026</li>
-                                <li>Load the <code>Architect_Plus_Spaceplanning_Complete.dyn</code> file</li>
-                                <li>Set the JSON file path to your generated design</li>
-                                <li>Run the script to generate 3D geometry</li>
-                            </ol>
-                        </div>
-                    </div>
+                <div class="json-container">
+                    <pre id="jsonOutput" class="json-output"></pre>
                 </div>
 
                 <div class="file-info">
-                    <p>✅ Design saved to: <code>./output/design.json</code></p>
-                    <p id="enhancedFileInfo" class="hidden">✅ Enhanced design saved to: <code>./output/enhanced_design.json</code></p>
+                    <p>✅ Design generated successfully!</p>
+                    <p>Copy the JSON above to use in your architectural software</p>
                 </div>
             </div>
 
@@ -160,53 +63,14 @@
 
         <!-- Footer -->
         <footer class="footer">
-            <p>Powered by Google Gemini AI • Professional Spaceplanning • Built with Flask</p>
+            <p>Powered by Google Gemini AI • Built with Flask</p>
         </footer>
     </div>
 
     <script>
-        // Initialize spaceplanning availability
-        let spaceplanningAvailable = false;
-        
-        // Check spaceplanning availability on page load
-        window.addEventListener('load', async function() {
-            try {
-                const response = await fetch('/spaceplanning-info');
-                const data = await response.json();
-                spaceplanningAvailable = data.available;
-                
-                if (!spaceplanningAvailable) {
-                    // Disable professional mode if spaceplanning not available
-                    const professionalRadio = document.querySelector('input[value="professional"]');
-                    professionalRadio.disabled = true;
-                    professionalRadio.parentElement.style.opacity = '0.5';
-                    professionalRadio.parentElement.title = 'Professional spaceplanning not available';
-                }
-            } catch (error) {
-                console.warn('Could not check spaceplanning availability:', error);
-            }
-        });
-
-        // Handle mode toggle
-        document.querySelectorAll('input[name="designMode"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                const professionalControls = document.getElementById('professionalControls');
-                const loadingMessage = document.getElementById('loadingMessage');
-                
-                if (this.value === 'professional') {
-                    professionalControls.classList.remove('hidden');
-                    loadingMessage.textContent = 'Generating professional design with spaceplanning...';
-                } else {
-                    professionalControls.classList.add('hidden');
-                    loadingMessage.textContent = 'Generating your architectural design...';
-                }
-            });
-        });
-
         // Function to generate architectural design
         async function generateDesign() {
             const description = document.getElementById('designDescription').value.trim();
-            const mode = document.querySelector('input[name="designMode"]:checked').value;
             
             // Validate input
             if (!description) {
@@ -218,34 +82,20 @@
             showLoading();
             
             try {
-                let endpoint = '/generate-design';
-                let requestBody = { description: description };
-                
-                // Use professional endpoint if selected
-                if (mode === 'professional') {
-                    endpoint = '/generate-with-spaceplanning';
-                    requestBody = {
-                        description: description,
-                        design_seed: parseInt(document.getElementById('designSeed').value),
-                        circulation_factor: parseFloat(document.getElementById('circulationFactor').value),
-                        acceptable_width: parseFloat(document.getElementById('acceptableWidth').value)
-                    };
-                }
-
                 // Send request to Flask backend
-                const response = await fetch(endpoint, {
+                const response = await fetch('/generate-design', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(requestBody)
+                    body: JSON.stringify({ description: description })
                 });
 
                 const data = await response.json();
 
                 if (response.ok) {
                     // Show successful results
-                    showResults(data, mode === 'professional');
+                    showResults(data);
                 } else {
                     // Show error message
                     showError(data.error || 'An error occurred while generating the design.');
@@ -265,7 +115,7 @@
         }
 
         // Function to show results
-        function showResults(data, isProfessional) {
+        function showResults(data) {
             document.getElementById('loadingSpinner').classList.add('hidden');
             document.getElementById('errorSection').classList.add('hidden');
             document.getElementById('resultsSection').classList.remove('hidden');
@@ -273,33 +123,6 @@
             
             // Format and display JSON
             document.getElementById('jsonOutput').textContent = JSON.stringify(data.design || data, null, 2);
-            
-            // Show spaceplanning results if available
-            if (isProfessional && data.spaceplanning) {
-                const summary = document.getElementById('spaceplanningSummary');
-                const tab = document.getElementById('spaceplanningTab');
-                
-                summary.classList.remove('hidden');
-                tab.style.display = 'block';
-                
-                // Update summary
-                document.getElementById('departmentCount').textContent = data.spaceplanning.departments || 0;
-                document.getElementById('programCount').textContent = data.spaceplanning.programs || 0;
-                document.getElementById('circulationCount').textContent = data.spaceplanning.circulation_elements || 0;
-                document.getElementById('geometryCount').textContent = data.spaceplanning.geometry_3d || 0;
-                document.getElementById('spaceplanningStatus').textContent = data.spaceplanning.status || 'Unknown';
-                
-                // Show raw spaceplanning data
-                document.getElementById('spaceplanningOutput').textContent = JSON.stringify(data.raw_spaceplanning || {}, null, 2);
-                
-                // Show enhanced file info
-                document.getElementById('enhancedFileInfo').classList.remove('hidden');
-            } else {
-                // Hide spaceplanning elements
-                document.getElementById('spaceplanningSummary').classList.add('hidden');
-                document.getElementById('spaceplanningTab').style.display = 'none';
-                document.getElementById('enhancedFileInfo').classList.add('hidden');
-            }
         }
 
         // Function to show error
@@ -312,21 +135,6 @@
             document.getElementById('errorMessage').textContent = message;
         }
 
-        // Tab switching functionality
-        function showTab(tabName) {
-            // Hide all tabs
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.classList.remove('active');
-            });
-            
-            // Show selected tab
-            document.getElementById(tabName + 'Tab').classList.add('active');
-            event.target.classList.add('active');
-        }
-
         // Allow Enter key to submit (Ctrl+Enter for new line)
         document.getElementById('designDescription').addEventListener('keydown', function(e) {
             if (e.key === 'Enter' && !e.ctrlKey) {
@@ -336,4 +144,4 @@
         });
     </script>
 </body>
-</html> 
+</html>
