@@ -1,0 +1,695 @@
+{
+  "Uuid": "1f591253-2c51-44d1-84b1-d8ee554f2091",
+  "IsCustomNode": false,
+  "Description": "",
+  "Name": "Architect_Plus_Spaceplanning_Complete_1",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [
+    {
+      "Id": "be1c7d402b074a47b1092f29a30f547a",
+      "Name": "JSON File Path",
+      "Type": "string",
+      "Type2": "string",
+      "Value": "output/enhanced_design.json",
+      "Description": "Creates a string."
+    },
+    {
+      "Id": "271d53b4e3b949a39712a84017723ad0",
+      "Name": "Design Seed",
+      "Type": "number",
+      "Type2": "number",
+      "Value": "50",
+      "MaximumValue": 100.0,
+      "MinimumValue": 1.0,
+      "StepValue": 1.0,
+      "NumberType": "Integer",
+      "Description": "Produces integer values"
+    },
+    {
+      "Id": "e0ba4d89132742aabb70a0b892badad5",
+      "Name": "Circulation Factor",
+      "Type": "number",
+      "Type2": "number",
+      "Value": "1.8",
+      "MaximumValue": 3.0,
+      "MinimumValue": 1.0,
+      "StepValue": 0.1,
+      "NumberType": "Double",
+      "Description": "Produces numeric values"
+    },
+    {
+      "Id": "1d28c5f1e3bc4ada98e3438546b6deb5",
+      "Name": "Acceptable Width",
+      "Type": "number",
+      "Type2": "number",
+      "Value": "18",
+      "MaximumValue": 30.0,
+      "MinimumValue": 5.0,
+      "StepValue": 0.5,
+      "NumberType": "Double",
+      "Description": "Produces numeric values"
+    }
+  ],
+  "Outputs": [
+    {
+      "Id": "d165e94d4ac1437280da404ce24df970",
+      "Name": "Department Polygons",
+      "Type": "unknown",
+      "InitialValue": "",
+      "Description": "Visualizes a node's output"
+    },
+    {
+      "Id": "319585c43b3d4244b8671c7bad379ae9",
+      "Name": "Program Polygons",
+      "Type": "unknown",
+      "InitialValue": "",
+      "Description": "Visualizes a node's output"
+    },
+    {
+      "Id": "b7d0c058705c4908a60aeee319348b3f",
+      "Name": "Circulation Network",
+      "Type": "unknown",
+      "InitialValue": "",
+      "Description": "Visualizes a node's output"
+    },
+    {
+      "Id": "8e70bb1b8cd848bd82f038e5ba4c7bed",
+      "Name": "3D Building Geometry",
+      "Type": "unknown",
+      "InitialValue": "",
+      "Description": "Visualizes a node's output"
+    }
+  ],
+  "Nodes": [
+    {
+      "ConcreteType": "CoreNodeModels.Input.StringInput, CoreNodeModels",
+      "SerializedWidth": 0.0,
+      "SerializedHeight": 0.0,
+      "Id": "be1c7d402b074a47b1092f29a30f547a",
+      "NodeType": "StringInputNode",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "7ef2c2dbb52947f6a8fd3bde80b01440",
+          "Name": "",
+          "Description": "String",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Creates a string.",
+      "InputValue": "output/enhanced_design.json"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.IntegerSlider, CoreNodeModels",
+      "NumberType": "Integer",
+      "MaximumValue": 100,
+      "MinimumValue": 1,
+      "StepValue": 1,
+      "Id": "271d53b4e3b949a39712a84017723ad0",
+      "NodeType": "NumberInputNode",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "6b961f78f1634d33bb44850d719016bb",
+          "Name": "",
+          "Description": "Int64",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Produces integer values",
+      "InputValue": 50
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.DoubleSlider, CoreNodeModels",
+      "NumberType": "Double",
+      "MaximumValue": 3.0,
+      "MinimumValue": 1.0,
+      "StepValue": 0.1,
+      "Id": "e0ba4d89132742aabb70a0b892badad5",
+      "NodeType": "NumberInputNode",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "71bc643fbd504787a6a6107750eb1466",
+          "Name": "",
+          "Description": "Double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Produces numeric values",
+      "InputValue": 1.8
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.DoubleSlider, CoreNodeModels",
+      "NumberType": "Double",
+      "MaximumValue": 30.0,
+      "MinimumValue": 5.0,
+      "StepValue": 0.5,
+      "Id": "1d28c5f1e3bc4ada98e3438546b6deb5",
+      "NodeType": "NumberInputNode",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "b453dc7a883a4bb8961e7fc199649362",
+          "Name": "",
+          "Description": "Double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Produces numeric values",
+      "InputValue": 18.0
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "Code": "# Basic imports\r\nimport json\r\n\r\n# Get inputs\r\njson_path = IN[0] if IN[0] else \"output/enhanced_design.json\"\r\ndesign_seed = IN[1] if len(IN) > 1 else 50\r\ncirculation_factor = IN[2] if len(IN) > 2 else 1.8\r\nacceptable_width = IN[3] if len(IN) > 3 else 18.0\r\n\r\n# Create separate outputs\r\nOUT = []\r\nOUT.append([\"Department 1\", \"Department 2\"])  # Output 0: Department Polygons\r\nOUT.append([\"Program 1\", \"Program 2\"])        # Output 1: Program Polygons\r\nOUT.append([\"Circulation 1\", \"Circulation 2\"]) # Output 2: Circulation Network",
+      "Engine": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "f2dc91b0831d4fe8b6bd625614344175",
+      "NodeType": "PythonScriptNode",
+      "Inputs": [
+        {
+          "Id": "d801824134fa432c99bdc438da13f062",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "70bb03ef4cd3429980c3237f62844f73",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "16f5244085d9475f9cdc366e58442ea3",
+          "Name": "IN[2]",
+          "Description": "Input #2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "e753f5ce0d424c259423bfcf6b12ba99",
+          "Name": "IN[3]",
+          "Description": "Input #3",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "4932e867dec4491c8f6f337d62478873",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "WatchWidth": 200.0,
+      "WatchHeight": 40.0,
+      "Id": "d165e94d4ac1437280da404ce24df970",
+      "NodeType": "ExtensionNode",
+      "Inputs": [
+        {
+          "Id": "14ea4f55abc84b75810a6ba596fff9cb",
+          "Name": "",
+          "Description": "Node to show output from",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "aa13431c564643f898c65f687b84e3cf",
+          "Name": "",
+          "Description": "Node output",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualizes a node's output"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "WatchWidth": 200.0,
+      "WatchHeight": 200.0,
+      "Id": "319585c43b3d4244b8671c7bad379ae9",
+      "NodeType": "ExtensionNode",
+      "Inputs": [
+        {
+          "Id": "c0229ade877d449a9d483e9e80885cbc",
+          "Name": "",
+          "Description": "Node to show output from",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "f2291be827b34f28a288a4e810b8e7e7",
+          "Name": "",
+          "Description": "Node output",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualizes a node's output"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "WatchWidth": 200.0,
+      "WatchHeight": 40.0,
+      "Id": "b7d0c058705c4908a60aeee319348b3f",
+      "NodeType": "ExtensionNode",
+      "Inputs": [
+        {
+          "Id": "6bf57d7f960d4c51932e770b4800668b",
+          "Name": "",
+          "Description": "Node to show output from",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "6f2766fffe3a492cbd47c782d276646a",
+          "Name": "",
+          "Description": "Node output",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualizes a node's output"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "WatchWidth": 200.0,
+      "WatchHeight": 40.0,
+      "Id": "8e70bb1b8cd848bd82f038e5ba4c7bed",
+      "NodeType": "ExtensionNode",
+      "Inputs": [
+        {
+          "Id": "08787abceb614d2ab9942c98b4c91c63",
+          "Name": "",
+          "Description": "Node to show output from",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "df765c12717446ef96f2c3e27374f1e7",
+          "Name": "",
+          "Description": "Node output",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualizes a node's output"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "Id": "652336f7e2ac4b27b021e79ab8640e64",
+      "NodeType": "FunctionNode",
+      "Inputs": [
+        {
+          "Id": "3f8e0660306846fd81e83a9ef4791b3a",
+          "Name": "geometry",
+          "Description": "The geometry to which you would like to apply color.\n\nGeometry",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "1ffbd22ad3ec4f4aa709fab88a9d13cb",
+          "Name": "color",
+          "Description": "The color.\n\nColor",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "d8999ec500954d1ea2b5980c0f09da57",
+          "Name": "GeometryColor",
+          "Description": "A Display object.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "FunctionSignature": "Modifiers.GeometryColor.ByGeometryColor@Autodesk.DesignScript.Geometry.Geometry,DSCore.Color",
+      "Replication": "Auto",
+      "Description": "Display geometry using a color.\n\nGeometryColor.ByGeometryColor (geometry: Geometry, color: Color): GeometryColor"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "Id": "8f813b2b6a8e44af9fe63dad826a8322",
+      "NodeType": "FunctionNode",
+      "Inputs": [
+        {
+          "Id": "b31059cf12b14115bba51db7d21538e9",
+          "Name": "geometry",
+          "Description": "The geometry to which you would like to apply color.\n\nGeometry",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "87bd01d47dcd4902a2348d5d2b09ec89",
+          "Name": "color",
+          "Description": "The color.\n\nColor",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "67462b8fc1f243be922007ddff4a38ca",
+          "Name": "GeometryColor",
+          "Description": "A Display object.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "FunctionSignature": "Modifiers.GeometryColor.ByGeometryColor@Autodesk.DesignScript.Geometry.Geometry,DSCore.Color",
+      "Replication": "Auto",
+      "Description": "Display geometry using a color.\n\nGeometryColor.ByGeometryColor (geometry: Geometry, color: Color): GeometryColor"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "Id": "4bc38ed57ec04cef8be89561ea14abc2",
+      "NodeType": "FunctionNode",
+      "Inputs": [
+        {
+          "Id": "3c4a60f9c2e84f479209233cd17cfc78",
+          "Name": "geometry",
+          "Description": "The geometry to which you would like to apply color.\n\nGeometry",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "fa5fc4c8bdcf49a994ac7c4e2afc36e9",
+          "Name": "color",
+          "Description": "The color.\n\nColor",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": true,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "882cb1d4ea294a6cb3f8b4c378e980d6",
+          "Name": "GeometryColor",
+          "Description": "A Display object.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "FunctionSignature": "Modifiers.GeometryColor.ByGeometryColor@Autodesk.DesignScript.Geometry.Geometry,DSCore.Color",
+      "Replication": "Auto",
+      "Description": "Display geometry using a color.\n\nGeometryColor.ByGeometryColor (geometry: Geometry, color: Color): GeometryColor"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "7ef2c2dbb52947f6a8fd3bde80b01440",
+      "End": "d801824134fa432c99bdc438da13f062",
+      "Id": "2542fd0780964fd6827fd332da387df2",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "6b961f78f1634d33bb44850d719016bb",
+      "End": "70bb03ef4cd3429980c3237f62844f73",
+      "Id": "2314090da5b84f18948deb16210dae65",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "71bc643fbd504787a6a6107750eb1466",
+      "End": "16f5244085d9475f9cdc366e58442ea3",
+      "Id": "df4f3e83206642e288fbc87f65316d26",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "b453dc7a883a4bb8961e7fc199649362",
+      "End": "e753f5ce0d424c259423bfcf6b12ba99",
+      "Id": "65c89aaea18d4c5689879a8a0331e1cf",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "4932e867dec4491c8f6f337d62478873",
+      "End": "14ea4f55abc84b75810a6ba596fff9cb",
+      "Id": "85e3b28457a441d6bc32197f3e3a13a4",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "4932e867dec4491c8f6f337d62478873",
+      "End": "c0229ade877d449a9d483e9e80885cbc",
+      "Id": "97525a0385ef43c48b7f3220f8219c86",
+      "IsHidden": "False"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "EnableLegacyPolyCurveBehavior": true,
+  "Thumbnail": "",
+  "GraphDocumentationURL": null,
+  "ExtensionWorkspaceData": [
+    {
+      "ExtensionGuid": "28992e1d-abb9-417f-8b1b-05e053bee670",
+      "Name": "Properties",
+      "Version": "3.5",
+      "Data": {}
+    },
+    {
+      "ExtensionGuid": "DFBD9CC0-DB40-457A-939E-8C8555555A9D",
+      "Name": "Generative Design",
+      "Version": "9.1",
+      "Data": {}
+    }
+  ],
+  "Author": "",
+  "Linting": {
+    "activeLinter": "None",
+    "activeLinterId": "7b75fb44-43fd-4631-a878-29f4d5d8399a",
+    "warningCount": 0,
+    "errorCount": 0
+  },
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "3.5.0.8297",
+      "RunType": "Automatic",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "_Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "ConnectorPins": [],
+    "NodeViews": [
+      {
+        "Id": "be1c7d402b074a47b1092f29a30f547a",
+        "Name": "JSON File Path",
+        "IsSetAsInput": true,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 170.5,
+        "Y": 118.5
+      },
+      {
+        "Id": "271d53b4e3b949a39712a84017723ad0",
+        "Name": "Design Seed",
+        "IsSetAsInput": true,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 160.07558393153795,
+        "Y": -186.98007296681192
+      },
+      {
+        "Id": "e0ba4d89132742aabb70a0b892badad5",
+        "Name": "Circulation Factor",
+        "IsSetAsInput": true,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 162.77208860752694,
+        "Y": -474.993750337704
+      },
+      {
+        "Id": "1d28c5f1e3bc4ada98e3438546b6deb5",
+        "Name": "Acceptable Width",
+        "IsSetAsInput": true,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 163.61538635541876,
+        "Y": -611.055517767347
+      },
+      {
+        "Id": "f2dc91b0831d4fe8b6bd625614344175",
+        "Name": "Architect Plus Spaceplanning",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 786.2950503416565,
+        "Y": -507.8619011368596
+      },
+      {
+        "Id": "d165e94d4ac1437280da404ce24df970",
+        "Name": "Department Polygons",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": true,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 1490.4587482700647,
+        "Y": -680.5094334638235
+      },
+      {
+        "Id": "319585c43b3d4244b8671c7bad379ae9",
+        "Name": "Program Polygons",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": true,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 1483.413541659155,
+        "Y": -544.5367315204905
+      },
+      {
+        "Id": "b7d0c058705c4908a60aeee319348b3f",
+        "Name": "Circulation Network",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": true,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 1486.6291564995295,
+        "Y": -253.04013362975354
+      },
+      {
+        "Id": "8e70bb1b8cd848bd82f038e5ba4c7bed",
+        "Name": "3D Building Geometry",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": true,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 1483.523610764661,
+        "Y": -124.67757658852611
+      },
+      {
+        "Id": "652336f7e2ac4b27b021e79ab8640e64",
+        "Name": "Programs",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 1817.8873682188262,
+        "Y": -346.2065056758057
+      },
+      {
+        "Id": "8f813b2b6a8e44af9fe63dad826a8322",
+        "Name": "Circulation ",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 1820.9929139536944,
+        "Y": -183.6829455510259
+      },
+      {
+        "Id": "4bc38ed57ec04cef8be89561ea14abc2",
+        "Name": "Departments",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 1811.676276749089,
+        "Y": -506.85588697251546
+      }
+    ],
+    "Annotations": [],
+    "X": 105.45374194397948,
+    "Y": 669.571971600622,
+    "Zoom": 0.32715845151298995
+  }
+}

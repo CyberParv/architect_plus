@@ -1,154 +1,84 @@
-# 🏗️ Architect Plus
+# Architect Plus
 
-**AI-Powered Architectural Design Generator**
+A Python-based web application for architectural space planning and design automation using Google's Gemini AI and Autodesk's Dynamo.
 
-A modern, dark-themed web application that uses Google's Gemini AI to generate architectural design specifications from natural language descriptions.
+## Features
 
-## ✨ Features
+- Space planning automation
+- Design optimization
+- Integration with Google Gemini AI
+- Integration with Autodesk Dynamo
+- Web-based interface
 
-- **Modern Dark UI**: Sleek interface with neon blue/purple accents
-- **AI-Powered Design**: Uses Google Gemini API for intelligent design generation
-- **JSON Output**: Structured architectural specifications
-- **Local File Storage**: Saves designs to `./output/design.json`
-- **Responsive Design**: Works on desktop and mobile devices
-- **Real-time Loading**: Shows progress while generating designs
+## Prerequisites
 
-## 🛠️ Tech Stack
+- Python 3.8+
+- Google Gemini API key
+- Autodesk Dynamo (for space planning features)
 
-- **Backend**: Flask (Python)
-- **Frontend**: HTML5, CSS3, JavaScript
-- **AI**: Google Generative AI (Gemini)
-- **Styling**: Custom CSS with modern dark theme
-- **Environment**: Python-dotenv for secure API key management
+## Installation
 
-## 📦 Installation
-
-1. **Clone or download the project**
-   ```bash
-   cd architect_plus
-   ```
-
-2. **Install Python dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Set up your Google Gemini API key**
-   - Get your API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
-   - Create a `.env` file in the root directory:
-   ```env
-   GEMINI_API_KEY=your_actual_api_key_here
-   FLASK_ENV=development
-   FLASK_DEBUG=True
-   ```
-
-4. **Run the application**
-   ```bash
-   python app.py
-   ```
-
-5. **Open your browser**
-   - Navigate to `http://localhost:5000`
-   - Start generating architectural designs!
-
-## 🚀 Usage
-
-1. **Enter your design description** in the text area
-   - Example: "A modern 2-story family home with 4 bedrooms, open-plan living area, and a double garage"
-
-2. **Click "Generate Design"** to process your request
-
-3. **View the results** in the JSON output section below
-
-4. **Check the saved file** at `./output/design.json`
-
-## 📋 Sample Output
-
-```json
-{
-  "length": 20.0,
-  "width": 15.0,
-  "height": 3.5,
-  "wall_thickness": 0.25,
-  "rooms": 4,
-  "floors": 2,
-  "foundation_type": "concrete slab",
-  "roof_type": "gable",
-  "material": "brick",
-  "estimated_cost": 250000,
-  "construction_time": "8-10 months"
-}
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/architect_plus.git
+cd architect_plus
 ```
 
-## 🎨 Customization
+2. Create a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
 
-### Modifying the UI
-- Edit `static/styles.css` to change colors, fonts, or layout
-- Update `templates/index.html` to modify the structure
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
 
-### Changing the AI Prompt
-- Edit the `prompt` variable in `app.py` to customize how Gemini generates designs
-- Modify the JSON structure in the prompt to add/remove fields
+4. Create a `.env` file in the project root:
+```
+GEMINI_API_KEY=your_api_key_here
+```
 
-### Adding New Features
-- Add new routes in `app.py` for additional functionality
-- Extend the JavaScript in `index.html` for new UI interactions
+## Usage
 
-## 🔧 Configuration
+1. Start the development server:
+```bash
+python app.py
+```
 
-### Environment Variables
-- `GEMINI_API_KEY`: Your Google Gemini API key (required)
-- `FLASK_ENV`: Flask environment (development/production)
-- `FLASK_DEBUG`: Enable/disable debug mode
+2. Open your browser and navigate to:
+```
+http://localhost:5000
+```
 
-### File Structure
+## Project Structure
+
 ```
 architect_plus/
-├── app.py                 # Main Flask application
-├── requirements.txt       # Python dependencies
-├── .env                  # Environment variables (create this)
-├── templates/
-│   └── index.html        # Main HTML template
-├── static/
-│   └── styles.css        # CSS styling
-└── output/
-    └── design.json       # Generated designs
+├── api/                    # API endpoints
+├── static/                 # Static assets (CSS, JS)
+├── templates/              # HTML templates
+├── app.py                  # Main application entry point
+├── design_automation.py    # Design automation integration
+├── dynamo_integration.py   # Dynamo integration
+├── gemini_integration.py   # Gemini AI integration
+├── requirements.txt        # Python dependencies
+└── sample_rooms.json      # Sample data
 ```
 
-## 🐛 Troubleshooting
+## Environment Variables
 
-### Common Issues
+- `GEMINI_API_KEY`: Your Google Gemini API key
 
-1. **"No module named 'google.generativeai'"**
-   - Run: `pip install -r requirements.txt`
+## Contributing
 
-2. **"API key not found"**
-   - Make sure your `.env` file exists and contains `GEMINI_API_KEY=your_key_here`
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-3. **"Failed to connect to the server"**
-   - Ensure Flask is running on `localhost:5000`
-   - Check your internet connection for API calls
+## License
 
-4. **JSON parsing errors**
-   - The app includes fallback JSON structure if Gemini returns invalid JSON
-
-## 🌟 Future Enhancements
-
-- Add 3D visualization of generated designs
-- Support for architectural drawing generation
-- Multiple design style options
-- Export to CAD formats
-- User authentication and design history
-- Advanced material and cost calculations
-
-## 📝 License
-
-This project is open source and available under the MIT License.
-
-## 🤝 Contributing
-
-Feel free to fork this project and submit pull requests for improvements!
-
----
-
-**Built with ❤️ using Flask and Google Gemini AI** 
+This project is licensed under the MIT License - see the LICENSE file for details. 

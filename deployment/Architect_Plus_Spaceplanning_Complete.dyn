@@ -1,0 +1,662 @@
+{
+  "Uuid": "3c9d0464-8643-5ffe-96e5-ab1769818209",
+  "IsCustomNode": false,
+  "Description": "",
+  "Name": "Architect_Plus_Spaceplanning_Complete",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "Point": {
+        "Key": "Autodesk.DesignScript.Geometry.Point",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Polygon": {
+        "Key": "Autodesk.DesignScript.Geometry.Polygon",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Surface": {
+        "Key": "Autodesk.DesignScript.Geometry.Surface",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Line": {
+        "Key": "Autodesk.DesignScript.Geometry.Line",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Color": {
+        "Key": "DSCore.Color",
+        "Value": "DSCoreNodes.dll"
+      },
+      "Display": {
+        "Key": "Display.Display",
+        "Value": "Display.dll"
+      }
+    }
+  },
+  "Inputs": [
+    {
+      "Id": "input_json_path",
+      "Name": "JSON File Path",
+      "Type": "string",
+      "Value": "output/design.json"
+    },
+    {
+      "Id": "input_design_seed",
+      "Name": "Design Seed",
+      "Type": "int",
+      "Value": 50
+    },
+    {
+      "Id": "input_circulation_factor",
+      "Name": "Circulation Factor",
+      "Type": "double",
+      "Value": 1.8
+    },
+    {
+      "Id": "input_acceptable_width",
+      "Name": "Acceptable Width",
+      "Type": "double",
+      "Value": 18.0
+    },
+    {
+      "Id": "input_kpu_depth",
+      "Name": "KPU Depth",
+      "Type": "double",
+      "Value": 15.0
+    },
+    {
+      "Id": "input_kpu_width",
+      "Name": "KPU Width",
+      "Type": "double",
+      "Value": 10.0
+    },
+    {
+      "Id": "input_grid_spacing",
+      "Name": "Grid Spacing",
+      "Type": "double",
+      "Value": 5.0
+    },
+    {
+      "Id": "input_floor_height",
+      "Name": "Floor Height",
+      "Type": "double",
+      "Value": 3.5
+    }
+  ],
+  "Outputs": [
+    {
+      "Id": "output_departments",
+      "Name": "Department Polygons",
+      "Type": "var"
+    },
+    {
+      "Id": "output_programs",
+      "Name": "Program Polygons",
+      "Type": "var"
+    },
+    {
+      "Id": "output_circulation",
+      "Name": "Circulation Network",
+      "Type": "var"
+    },
+    {
+      "Id": "output_3d_geometry",
+      "Name": "3D Building Geometry",
+      "Type": "var"
+    },
+    {
+      "Id": "output_site_outline",
+      "Name": "Site Outline",
+      "Type": "var"
+    },
+    {
+      "Id": "output_building_data",
+      "Name": "Building Data",
+      "Type": "var"
+    },
+    {
+      "Id": "output_status",
+      "Name": "Processing Status",
+      "Type": "string"
+    }
+  ],
+  "Nodes": [
+    {
+      "ConcreteType": "CoreNodeModels.Input.StringInput, CoreNodeModels",
+      "NodeType": "StringInputNode",
+      "InputValue": "output/design.json",
+      "Id": "json_path_input",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "json_path_output",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Creates a string."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.DoubleSlider, CoreNodeModels",
+      "NodeType": "NumberInputNode",
+      "NumberType": "Double",
+      "MaximumValue": 100.0,
+      "MinimumValue": 1.0,
+      "StepValue": 1.0,
+      "InputValue": 50.0,
+      "Id": "design_seed_input",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "design_seed_output",
+          "Name": "",
+          "Description": "Double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A slider that produces numeric values."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.DoubleSlider, CoreNodeModels",
+      "NodeType": "NumberInputNode",
+      "NumberType": "Double",
+      "MaximumValue": 3.0,
+      "MinimumValue": 1.0,
+      "StepValue": 0.1,
+      "InputValue": 1.8,
+      "Id": "circulation_factor_input",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "circulation_factor_output",
+          "Name": "",
+          "Description": "Double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A slider that produces numeric values."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Architect Plus Spaceplanning Integration\n# Processes Gemini JSON and generates architectural geometry\n\nimport sys\nimport os\nimport json\nimport clr\nimport traceback\n\n# Add references for Dynamo geometry\ntry:\n    clr.AddReference('ProtoGeometry')\n    from Autodesk.DesignScript.Geometry import *\n    GEOMETRY_AVAILABLE = True\nexcept:\n    GEOMETRY_AVAILABLE = False\n    print(\"ProtoGeometry not available, using mock objects\")\n\n# Add current directory to path\nsys.path.append(os.path.dirname(os.path.abspath(__file__)))\n\n# Import our integration module\ntry:\n    from dynamo_spaceplanning_integration import DynamoSpaceplanningIntegrator\n    INTEGRATION_AVAILABLE = True\nexcept Exception as e:\n    INTEGRATION_AVAILABLE = False\n    print(f\"Integration module not available: {e}\")\n\ndef safe_process_spaceplanning(json_path, design_seed, circulation_factor, acceptable_width):\n    \"\"\"Safely process spaceplanning with error handling\"\"\"\n    try:\n        if not INTEGRATION_AVAILABLE:\n            return create_fallback_geometry()\n        \n        # Initialize integrator\n        integrator = DynamoSpaceplanningIntegrator(json_path)\n        \n        # Override parameters\n        integrator.design_params['circulation_factor'] = circulation_factor\n        \n        # Run spaceplanning\n        results = integrator.run_complete_spaceplanning(int(design_seed))\n        \n        if results.get('success'):\n            return extract_geometry_from_results(results)\n        else:\n            print(f\"Spaceplanning failed: {results.get('message', 'Unknown error')}\")\n            return create_fallback_geometry()\n            \n    except Exception as e:\n        print(f\"Error in spaceplanning: {e}\")\n        print(traceback.format_exc())\n        return create_fallback_geometry()\n\ndef create_fallback_geometry():\n    \"\"\"Create fallback geometry when spaceplanning fails\"\"\"\n    try:\n        if GEOMETRY_AVAILABLE:\n            # Create simple rectangular building\n            site_points = [\n                Point.ByCoordinates(0, 0, 0),\n                Point.ByCoordinates(100, 0, 0),\n                Point.ByCoordinates(100, 150, 0),\n                Point.ByCoordinates(0, 150, 0)\n            ]\n            \n            # Create departments\n            dept1_points = [\n                Point.ByCoordinates(10, 10, 0),\n                Point.ByCoordinates(40, 10, 0),\n                Point.ByCoordinates(40, 40, 0),\n                Point.ByCoordinates(10, 40, 0)\n            ]\n            \n            dept2_points = [\n                Point.ByCoordinates(50, 10, 0),\n                Point.ByCoordinates(90, 10, 0),\n                Point.ByCoordinates(90, 40, 0),\n                Point.ByCoordinates(50, 40, 0)\n            ]\n            \n            # Create polygons\n            site_polygon = Polygon.ByPoints(site_points)\n            dept1_polygon = Polygon.ByPoints(dept1_points)\n            dept2_polygon = Polygon.ByPoints(dept2_points)\n            \n            # Create 3D surfaces\n            site_surface = Surface.ByPatch(site_polygon)\n            dept1_surface = dept1_polygon.Extrude(Vector.ByCoordinates(0, 0, 3.5))\n            dept2_surface = dept2_polygon.Extrude(Vector.ByCoordinates(0, 0, 3.5))\n            \n            # Create circulation line\n            circulation_line = Line.ByStartPointEndPoint(\n                Point.ByCoordinates(25, 25, 0),\n                Point.ByCoordinates(70, 25, 0)\n            )\n            \n            return {\n                'departments': [dept1_polygon, dept2_polygon],\n                'programs': [dept1_polygon, dept2_polygon],  # Simplified\n                'circulation': [circulation_line],\n                'geometry_3d': [dept1_surface, dept2_surface],\n                'site_outline': site_polygon,\n                'building_data': {\n                    'departments': ['Emergency Department', 'Patient Care'],\n                    'total_area': 1800,\n                    'floors': 3\n                },\n                'status': 'Fallback geometry created successfully'\n            }\n        else:\n            # Return mock data when geometry is not available\n            return {\n                'departments': ['Mock Department 1', 'Mock Department 2'],\n                'programs': ['Mock Program 1', 'Mock Program 2'],\n                'circulation': ['Mock Circulation'],\n                'geometry_3d': ['Mock 3D Geometry'],\n                'site_outline': 'Mock Site Outline',\n                'building_data': {\n                    'departments': ['Emergency Department', 'Patient Care'],\n                    'total_area': 1800,\n                    'floors': 3\n                },\n                'status': 'Mock geometry created (ProtoGeometry not available)'\n            }\n            \n    except Exception as e:\n        print(f\"Error creating fallback geometry: {e}\")\n        return {\n            'departments': [],\n            'programs': [],\n            'circulation': [],\n            'geometry_3d': [],\n            'site_outline': None,\n            'building_data': {},\n            'status': f'Error: {str(e)}'\n        }\n\ndef extract_geometry_from_results(results):\n    \"\"\"Extract geometry from spaceplanning results\"\"\"\n    try:\n        departments = results.get('departments', [])\n        circulation = results.get('circulation', [])\n        geometry_3d = results.get('geometry_3d', [])\n        site_outline = results.get('site_outline')\n        building_outline = results.get('building_outline')\n        \n        # Extract department polygons\n        dept_polygons = []\n        program_polygons = []\n        \n        for dept in departments:\n            dept_poly = dept.get('DeptPolygon')\n            if dept_poly:\n                dept_polygons.append(dept_poly)\n            \n            # Extract program polygons\n            for program in dept.get('ProgramsInDept', []):\n                prog_poly = program.get('ProgramPolygon')\n                if prog_poly:\n                    program_polygons.append(prog_poly)\n        \n        # Prepare building data\n        building_data = {\n            'departments': [dept.get('DeptName', 'Unknown') for dept in departments],\n            'total_area': sum(dept.get('DeptAreaProvided', 0) for dept in departments),\n            'floors': results.get('design_parameters', {}).get('building_info', {}).get('floors', 1)\n        }\n        \n        return {\n            'departments': dept_polygons,\n            'programs': program_polygons,\n            'circulation': circulation,\n            'geometry_3d': geometry_3d,\n            'site_outline': site_outline,\n            'building_data': building_data,\n            'status': 'Spaceplanning completed successfully'\n        }\n        \n    except Exception as e:\n        print(f\"Error extracting geometry: {e}\")\n        return create_fallback_geometry()\n\n# Main execution\ntry:\n    # Get inputs\n    json_path = IN[0] if IN[0] else \"output/design.json\"\n    design_seed = IN[1] if len(IN) > 1 else 50\n    circulation_factor = IN[2] if len(IN) > 2 else 1.8\n    acceptable_width = IN[3] if len(IN) > 3 else 18.0\n    \n    # Process spaceplanning\n    results = safe_process_spaceplanning(json_path, design_seed, circulation_factor, acceptable_width)\n    \n    # Set outputs\n    OUT = [\n        results.get('departments', []),\n        results.get('programs', []),\n        results.get('circulation', []),\n        results.get('geometry_3d', []),\n        results.get('site_outline'),\n        results.get('building_data', {}),\n        results.get('status', 'Processing completed')\n    ]\n    \nexcept Exception as e:\n    error_msg = f\"Critical error: {str(e)}\"\n    print(error_msg)\n    print(traceback.format_exc())\n    \n    # Return error state\n    OUT = [[], [], [], [], None, {}, error_msg]",
+      "Engine": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "main_spaceplanning_node",
+      "Inputs": [
+        {
+          "Id": "json_path_input_port",
+          "Name": "IN[0]",
+          "Description": "JSON File Path",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "design_seed_input_port",
+          "Name": "IN[1]",
+          "Description": "Design Seed",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "circulation_factor_input_port",
+          "Name": "IN[2]",
+          "Description": "Circulation Factor",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "acceptable_width_input_port",
+          "Name": "IN[3]",
+          "Description": "Acceptable Width",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "departments_output",
+          "Name": "OUT[0]",
+          "Description": "Department Polygons",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "programs_output",
+          "Name": "OUT[1]",
+          "Description": "Program Polygons",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "circulation_output",
+          "Name": "OUT[2]",
+          "Description": "Circulation Network",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "geometry_3d_output",
+          "Name": "OUT[3]",
+          "Description": "3D Building Geometry",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "site_outline_output",
+          "Name": "OUT[4]",
+          "Description": "Site Outline",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "building_data_output",
+          "Name": "OUT[5]",
+          "Description": "Building Data",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "status_output",
+          "Name": "OUT[6]",
+          "Description": "Processing Status",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs a Python script with CPython3 engine."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "WatchNode",
+      "Id": "watch_departments",
+      "Inputs": [
+        {
+          "Id": "watch_departments_input",
+          "Name": "",
+          "Description": "Node to evaluate.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "watch_departments_output",
+          "Name": "",
+          "Description": "Watch contents.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualize the output of node."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "WatchNode",
+      "Id": "watch_programs",
+      "Inputs": [
+        {
+          "Id": "watch_programs_input",
+          "Name": "",
+          "Description": "Node to evaluate.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "watch_programs_output",
+          "Name": "",
+          "Description": "Watch contents.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualize the output of node."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "WatchNode",
+      "Id": "watch_3d_geometry",
+      "Inputs": [
+        {
+          "Id": "watch_3d_geometry_input",
+          "Name": "",
+          "Description": "Node to evaluate.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "watch_3d_geometry_output",
+          "Name": "",
+          "Description": "Watch contents.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualize the output of node."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "WatchNode",
+      "Id": "watch_building_data",
+      "Inputs": [
+        {
+          "Id": "watch_building_data_input",
+          "Name": "",
+          "Description": "Node to evaluate.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "watch_building_data_output",
+          "Name": "",
+          "Description": "Watch contents.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualize the output of node."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "WatchNode",
+      "Id": "watch_status",
+      "Inputs": [
+        {
+          "Id": "watch_status_input",
+          "Name": "",
+          "Description": "Node to evaluate.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "watch_status_output",
+          "Name": "",
+          "Description": "Watch contents.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualize the output of node."
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "json_path_output",
+      "End": "json_path_input_port",
+      "Id": "connector_1"
+    },
+    {
+      "Start": "design_seed_output",
+      "End": "design_seed_input_port",
+      "Id": "connector_2"
+    },
+    {
+      "Start": "circulation_factor_output",
+      "End": "circulation_factor_input_port",
+      "Id": "connector_3"
+    },
+    {
+      "Start": "departments_output",
+      "End": "watch_departments_input",
+      "Id": "connector_4"
+    },
+    {
+      "Start": "programs_output",
+      "End": "watch_programs_input",
+      "Id": "connector_5"
+    },
+    {
+      "Start": "geometry_3d_output",
+      "End": "watch_3d_geometry_input",
+      "Id": "connector_6"
+    },
+    {
+      "Start": "building_data_output",
+      "End": "watch_building_data_input",
+      "Id": "connector_7"
+    },
+    {
+      "Start": "status_output",
+      "End": "watch_status_input",
+      "Id": "connector_8"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.19.0.5742",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "JSON File Path",
+        "Id": "json_path_input",
+        "IsSetAsInput": true,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -200.0,
+        "Y": 100.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Design Seed",
+        "Id": "design_seed_input",
+        "IsSetAsInput": true,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -200.0,
+        "Y": 200.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Circulation Factor",
+        "Id": "circulation_factor_input",
+        "IsSetAsInput": true,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -200.0,
+        "Y": 300.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Architect Plus Spaceplanning",
+        "Id": "main_spaceplanning_node",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 200.0,
+        "Y": 200.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Department Polygons",
+        "Id": "watch_departments",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": true,
+        "Excluded": false,
+        "X": 600.0,
+        "Y": 100.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Program Polygons",
+        "Id": "watch_programs",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": true,
+        "Excluded": false,
+        "X": 600.0,
+        "Y": 200.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "3D Building Geometry",
+        "Id": "watch_3d_geometry",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": true,
+        "Excluded": false,
+        "X": 600.0,
+        "Y": 300.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Building Data",
+        "Id": "watch_building_data",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": true,
+        "Excluded": false,
+        "X": 600.0,
+        "Y": 400.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Processing Status",
+        "Id": "watch_status",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": true,
+        "Excluded": false,
+        "X": 600.0,
+        "Y": 500.0
+      }
+    ],
+    "Annotations": [
+      {
+        "Id": "annotation_1",
+        "Title": "Architect Plus Spaceplanning Integration",
+        "DescriptionText": "Complete integration of Gemini AI JSON with Spaceplanning zero-touch nodes.\nProcesses architectural designs from text prompts and generates 3D geometry.",
+        "IsExpanded": true,
+        "WidthAdjustment": 0.0,
+        "HeightAdjustment": 0.0,
+        "Nodes": [
+          "json_path_input",
+          "design_seed_input",
+          "circulation_factor_input",
+          "main_spaceplanning_node"
+        ],
+        "HasNestedGroups": false,
+        "Left": -220.0,
+        "Top": 50.0,
+        "Width": 500.0,
+        "Height": 400.0,
+        "FontSize": 14.0,
+        "InitialTop": 100.0,
+        "InitialHeight": 350.0,
+        "TextblockHeight": 50.0,
+        "Background": "#FFC1D676"
+      },
+      {
+        "Id": "annotation_2",
+        "Title": "Outputs",
+        "DescriptionText": "Generated architectural geometry and building data ready for Revit Design Automation.",
+        "IsExpanded": true,
+        "WidthAdjustment": 0.0,
+        "HeightAdjustment": 0.0,
+        "Nodes": [
+          "watch_departments",
+          "watch_programs",
+          "watch_3d_geometry",
+          "watch_building_data",
+          "watch_status"
+        ],
+        "HasNestedGroups": false,
+        "Left": 580.0,
+        "Top": 50.0,
+        "Width": 200.0,
+        "Height": 500.0,
+        "FontSize": 14.0,
+        "InitialTop": 100.0,
+        "InitialHeight": 450.0,
+        "TextblockHeight": 50.0,
+        "Background": "#FFBB87C6"
+      }
+    ],
+    "X": 0.0,
+    "Y": 0.0,
+    "Zoom": 1.0
+  }
+} 
